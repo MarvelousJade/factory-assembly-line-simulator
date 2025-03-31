@@ -19,7 +19,7 @@ namespace seneca {
 		m_itemName = util.extractToken(record, next_pos, more);
 		m_serialNumber = std::stoi(util.extractToken(record, next_pos, more));
 		m_quantity = std::stoi(util.extractToken(record, next_pos, more));
-		m_description = util.extractToken(record, next_pos, more);
+		m_description = util.extractToken(record, next_pos, more, false);
 		
 		m_widthField = std::max(m_widthField, util.getFieldWidth());
 	};

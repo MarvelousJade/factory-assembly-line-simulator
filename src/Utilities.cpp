@@ -4,17 +4,17 @@
 namespace seneca {
 	char Utilities::m_delimiter = ',';
 
-	Utilities::Utilities() : m_widthFiled(1) {};
+	Utilities::Utilities() : m_widthField(1) {};
 
 	void Utilities::setFieldWidth(size_t newWidth) {
-		m_widthFiled = newWidth;
+		m_widthField = newWidth;
 	};	
 
 	size_t Utilities::getFieldWidth() const {
-		return m_widthFiled;
+		return m_widthField;
 	};
 
-	std::string Utilities::extractToken(const std::string& str, size_t& next_pos, bool& more) {
+	std::string Utilities::extractToken(const std::string& str, size_t& next_pos, bool& more, bool updateWidth) {
 		if (next_pos >= str.size()) {
 			more = false;
 			return "";
@@ -33,7 +33,8 @@ namespace seneca {
 		token.erase(0, token.find_first_not_of(" "));
 		token.erase(token.find_last_not_of(" ") + 1);
 		
-		if (m_widthFiled < token.size()) m_widthFiled = token.size();
+		if (updateWidth && m_widthField < token.size()) 
+			m_widthField = token.size();
 
 		return token;
 	};
