@@ -11,7 +11,7 @@ namespace seneca {
 			std::string m_itemName;
 			size_t m_serialNumber{0};
 			bool m_isFilled{false};
-
+				
 			Item(const std::string& src) : m_itemName(src) {};
 		};
 		std::string m_name;
