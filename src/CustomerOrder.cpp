@@ -105,18 +105,15 @@ namespace seneca {
 	};
 
 	void CustomerOrder::fillItem(Station& station, std::ostream& os) { 
-		bool printed = false;
-
+		bool filled = false;
 		for (size_t i = 0; i < m_cntItem; i++) {
-			if (m_lstItem[i]->m_itemName == station.getItemName() && station.getQuantity() > 0) {
+			if (m_lstItem[i]->m_itemName == station.getItemName() && station.getQuantity() > 0 && !filled) {
 				m_lstItem[i]->m_serialNumber =  station.getNextSerialNumber();		
 				m_lstItem[i]->m_isFilled = true;
 				station.updateQuantity();
+				filled = true;
 				
-				if(!printed) {
-					os << "    Filled " << m_name << ", " << m_product << " " << "[" << m_lstItem[i]->m_itemName << "]" << std::endl; 
-					printed = true;
-				}
+				os << "    Filled " << m_name << ", " << m_product << " " << "[" << m_lstItem[i]->m_itemName << "]" << std::endl; 
 			};
 		};	
 	};
