@@ -33,6 +33,8 @@ namespace seneca {
 			more = true;
 			for (size_t i = 0; i < m_cntItem; i++) {
 				m_lstItem[i] = new Item(util.extractToken(record, next_pos, more));	
+				std::string token = util.extractToken(record, next_pos, more);	
+				if (!token.empty()) m_lstItem[i] = new Item(token);
 			};
 
 			if(CustomerOrder::m_widthField < util.getFieldWidth()) 
