@@ -11,7 +11,6 @@ namespace seneca {
 
 	CustomerOrder::CustomerOrder(const std::string& record) {
 		m_cntItem = 0;
-		m_lstItem = nullptr;
 
 		Utilities util;
 		size_t next_pos = 0;
@@ -21,20 +20,26 @@ namespace seneca {
 		m_product = util.extractToken(record, next_pos, more);
 
 		size_t temp_pos = next_pos;
+		bool temp_more = more;
+		std::string temp_token = "";
 
-		while (more) {
-			util.extractToken(record, temp_pos, more);
-			m_cntItem++;
+		while (temp_more) {
+			temp_token = util.extractToken(record, temp_pos, temp_more);
+			if(!temp_token.empty()) m_cntItem++;
 		};
 		
-		m_lstItem = new Item*[m_cntItem];
-		more = true;
-		for (size_t i = 0; i < m_cntItem; i++) {
-			m_lstItem[i] = new Item(util.extractToken(record, next_pos, more));	
-		};
+		if (m_cntItem > 0) {
+			m_lstItem = new Item*[m_cntItem];
+			more = true;
+			for (size_t i = 0; i < m_cntItem; i++) {
+				m_lstItem[i] = new Item(util.extractToken(record, next_pos, more));	
+			};
 
-		if(CustomerOrder::m_widthField < util.getFieldWidth()) 
-			CustomerOrder::m_widthField = util.getFieldWidth();
+			if(CustomerOrder::m_widthField < util.getFieldWidth()) 
+				CustomerOrder::m_widthField = util.getFieldWidth();
+		} else {
+			m_lstItem = nullptr;
+		};
 	};
 
 	CustomerOrder::CustomerOrder(const CustomerOrder& src) {
