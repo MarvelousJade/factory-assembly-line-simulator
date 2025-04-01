@@ -31,8 +31,8 @@ namespace seneca {
 		if (m_cntItem > 0) {
 			m_lstItem = new Item*[m_cntItem];
 			more = true;
+
 			for (size_t i = 0; i < m_cntItem; i++) {
-				m_lstItem[i] = new Item(util.extractToken(record, next_pos, more));	
 				std::string token = util.extractToken(record, next_pos, more);	
 				if (!token.empty()) m_lstItem[i] = new Item(token);
 			};
@@ -50,6 +50,14 @@ namespace seneca {
 
 	CustomerOrder::CustomerOrder(CustomerOrder&& src) noexcept {
 		if (this != &src) {
+			if (m_lstItem) {
+				for (size_t i = 0; i < m_cntItem; i++) {
+					delete m_lstItem[i];
+				};
+				delete[] m_lstItem;
+				m_lstItem = nullptr;
+			};
+
 			m_name = std::move(src.m_name);
 			m_product = std::move(src.m_product);
 			m_cntItem = src.m_cntItem;
@@ -64,6 +72,14 @@ namespace seneca {
 
 	CustomerOrder& CustomerOrder::operator=(CustomerOrder&& src) noexcept {
 		if (this != &src) {
+			if (m_lstItem) {
+				for (size_t i = 0; i < m_cntItem; i++) {
+					delete m_lstItem[i];
+				};
+				delete[] m_lstItem;
+				m_lstItem = nullptr;
+			};
+
 			m_name = std::move(src.m_name);
 			m_product = std::move(src.m_product);
 			m_cntItem = src.m_cntItem;
