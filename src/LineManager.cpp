@@ -29,35 +29,75 @@ namespace seneca {
 			std::string firstStation =  util.extractToken(line, next_pos, more);
 			std::string nextStation =  util.extractToken(line, next_pos, more);
 			
-			auto it = find_if(stations.begin(), stations.end(), [&](Workstation* station){
+			if (!firstStation.empty()) {
+				auto it = find_if(stations.begin(), stations.end(), [&](Workstation* station){
 				return station->getItemName() == firstStation; 
-			});
+				});
 
-			if (it != stations.end()) {
-				firstStationPtr = *it;
-				m_activeLine.push_back(firstStationPtr);
+				if (it != stations.end()) {
+					firstStationPtr = *it;
+				};
+
+				if (firstStationPtr) {
+					bool isExisted = any_of(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* station) {
+					return firstStationPtr->getItemName() == station->getItemName();
+					});
+
+					if (!isExisted && firstStationPtr) {
+						m_activeLine.push_back(firstStationPtr);
+					};
+				};
+
+				it = find_if(stations.begin(), stations.end(), [&](Workstation* station){
+						return station->getItemName() == nextStation; 
+					});
+
+				if (it != stations.end()) {
+						nextStationPtr = *it;	
+				};
+
+				if (nextStationPtr) {
+					bool isExisted = any_of(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* station) {
+						return nextStationPtr->getItemName() == station->getItemName();
+						});
+					
+					
+
+					if (!isExisted && nextStationPtr) {
+						m_activeLine.push_back(nextStationPtr);
+					};	
+				};
+
+				if(firstStationPtr) firstStationPtr->setNextStation(nextStationPtr);
+
 			};
+		};
 
-			it = find_if(stations.begin(), stations.end(), [&](Workstation* station){
-				return station->getItemName() == nextStation; 
-			});
+		ifile.close();
+
+		for(auto& station : m_activeLine) {
+			bool isInNextStation = false;
 			
-			if (it != stations.end()) {
-				nextStationPtr = *it;
-				m_activeLine.push_back(nextStationPtr);
-			};
+			for(auto& other : m_activeLine) {
+				if(other->getNextStation() && station->getItemName() == other->getNextStation()->getItemName()) isInNextStation =true;
+			};	
 
-			firstStationPtr->setNextStation(nextStationPtr);
+			if(!isInNextStation) m_firstStation = station;
 		};
 
 		m_cntCustomerOrder = g_pending.size();	
 	};	
 
 	void LineManager::reorderStations() {
-		std::sort(m_activeLine.begin(), m_activeLine.end(),
-			[](Workstation* a, Workstation* b){
-				return a->getNextStation() == b;	
-			});
+		std::vector<Workstation*> orderedStation;
+		Workstation* current = m_firstStation;
+
+		while(current) {
+			orderedStation.push_back(current);
+			current = current->getNextStation();
+		}
+		
+		m_activeLine = orderedStation;
 	};
 
 	bool LineManager::run(std::ostream& os) {
@@ -66,15 +106,18 @@ namespace seneca {
 
 		os << "Line Manager Iteration: " << runCount << std::endl;	
 		
-		(*m_firstStation) += std::move(g_pending.front());
-		g_pending.pop_front();
+		if (!g_pending.empty()) {
+			(*m_firstStation) += std::move(g_pending.front());
+			g_pending.pop_front();
 
+		}; 
+		
 		std::for_each(m_activeLine.begin(), m_activeLine.end(), 
 			[&](Workstation* station) {
 				station->fill(os);
 				isFinished = station->attemptToMoveOrder();	
 			});
-
+		
 		return isFinished;
 	};
 
