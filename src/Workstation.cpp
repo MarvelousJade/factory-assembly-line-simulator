@@ -9,10 +9,8 @@ namespace seneca {
 	Workstation::Workstation(const std::string& record) : Station(record), m_pNextStaion(nullptr) {};
 
 	void Workstation::fill(std::ostream& os) {
-		if (!g_pending.empty()) {
-			g_pending.front().fillItem(*this, os);
-			m_orders.push_back(std::move(g_pending.front()));	
-			g_pending.pop_front();
+		if (!m_orders.empty()) {
+			m_orders.front().fillItem(*this, os);
 		};
 	};
 
@@ -26,14 +24,14 @@ namespace seneca {
 				if (m_pNextStaion) {
 					m_pNextStaion->m_orders.push_back(std::move(m_orders.front()));
 					isMoved = true;
-				};
-
-				if (m_orders.front().isOrderFilled()) {
+				} else {
+					if (m_orders.front().isOrderFilled()) {
 					g_completed.push_back(std::move(m_orders.front()));
 					m_orders.pop_front();
-				} else {
-					g_incomplete.push_back(std::move(m_orders.front()));
-					m_orders.pop_front();
+					} else {
+						g_incomplete.push_back(std::move(m_orders.front()));
+						m_orders.pop_front();
+					};
 				};
 			};
 		};
