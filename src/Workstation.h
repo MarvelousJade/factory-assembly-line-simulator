@@ -7,9 +7,9 @@
 #include "Station.h"
 
 namespace seneca {
-	static std::deque<CustomerOrder> g_pending;
-	static std::deque<CustomerOrder> g_completed;
-	static std::deque<CustomerOrder> g_incomplete;
+	extern std::deque<CustomerOrder> g_pending;
+	extern std::deque<CustomerOrder> g_completed;
+	extern std::deque<CustomerOrder> g_incomplete;
 
 	class Workstation : public Station {
 		std::deque<CustomerOrder> m_orders;
