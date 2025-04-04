@@ -24,15 +24,15 @@ namespace seneca {
 				if (m_pNextStaion) {
 					*m_pNextStaion += std::move(m_orders.front());
 					m_orders.pop_front();
-					isMoved = true;
 				} else {
 					if (m_orders.front().isOrderFilled()) {
 					g_completed.push_back(std::move(m_orders.front()));
-					m_orders.pop_front();
 					} else {
 						g_incomplete.push_back(std::move(m_orders.front()));
-						m_orders.pop_front();
 					};
+					
+					isMoved = true;
+					m_orders.pop_front();
 				};
 			};
 		};
