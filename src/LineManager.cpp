@@ -101,8 +101,6 @@ namespace seneca {
 	};
 
 	bool LineManager::run(std::ostream& os) {
-		bool isFinished = false;	
-		
 		if (!g_pending.empty()) {
 			(*m_firstStation) += std::move(g_pending.front());
 			g_pending.pop_front();
@@ -122,9 +120,8 @@ namespace seneca {
 		runCount++;
 		os << "Line Manager Iteration: " << runCount << std::endl;	
 		
-		isFinished = true;
 
-		return isFinished;
+		return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
 	};
 
 	void LineManager::display(std::ostream& os) const {
