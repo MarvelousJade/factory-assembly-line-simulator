@@ -120,13 +120,18 @@ namespace seneca {
 	void CustomerOrder::fillItem(Station& station, std::ostream& os) { 
 		bool filled = false;
 		for (size_t i = 0; i < m_cntItem && !filled; i++) {
-			if (m_lstItem[i]->m_itemName == station.getItemName() && station.getQuantity() > 0 && !m_lstItem[i]->m_isFilled) {
-				m_lstItem[i]->m_serialNumber =  station.getNextSerialNumber();		
-				m_lstItem[i]->m_isFilled = true;
-				station.updateQuantity();
-				filled = true;
-				
-				os << "    Filled " << m_name << ", " << m_product << " " << "[" << m_lstItem[i]->m_itemName << "]" << std::endl; 
+			if (m_lstItem[i]->m_itemName == station.getItemName() && !m_lstItem[i]->m_isFilled) {
+				if (station.getQuantity() > 0) {
+					m_lstItem[i]->m_serialNumber =  station.getNextSerialNumber();		
+					m_lstItem[i]->m_isFilled = true;
+					station.updateQuantity();
+					filled = true;
+					
+					os << "    Filled " << m_name << ", " << m_product << " " << "[" << m_lstItem[i]->m_itemName << "]" << std::endl; 
+				} else {
+
+					os << "    Unable to fill " << m_name << ", " << m_product << " " << "[" << m_lstItem[i]->m_itemName << "]" << std::endl; 
+				};
 			};
 		};	
 	};
