@@ -51,17 +51,7 @@ namespace seneca {
 					});
 
 				if (it != stations.end()) {
-						nextStationPtr = *it;	
-				};
-
-				if (nextStationPtr) {
-					bool isExisted = any_of(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* station) {
-						return nextStationPtr->getItemName() == station->getItemName();
-						});
-
-					if (!isExisted && nextStationPtr) {
-						m_activeLine.push_back(nextStationPtr);
-					};	
+					nextStationPtr = *it;	
 				};
 
 				if(firstStationPtr) firstStationPtr->setNextStation(nextStationPtr);
