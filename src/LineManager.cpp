@@ -102,9 +102,6 @@ namespace seneca {
 
 	bool LineManager::run(std::ostream& os) {
 		bool isFinished = false;	
-		runCount++;
-
-		os << "Line Manager Iteration: " << runCount << std::endl;	
 		
 		if (!g_pending.empty()) {
 			(*m_firstStation) += std::move(g_pending.front());
@@ -112,12 +109,21 @@ namespace seneca {
 
 		}; 
 		
+		
 		std::for_each(m_activeLine.begin(), m_activeLine.end(), 
 			[&](Workstation* station) {
-				station->fill(os);
-				isFinished = station->attemptToMoveOrder();	
+				bool isMoved = false;
+				do {
+					station->fill(os);
+					isMoved = station->attemptToMoveOrder();				
+				} while (isMoved);
 			});
 		
+		runCount++;
+		os << "Line Manager Iteration: " << runCount << std::endl;	
+		
+		isFinished = true;
+
 		return isFinished;
 	};
 
