@@ -58,8 +58,6 @@ namespace seneca {
 					bool isExisted = any_of(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* station) {
 						return nextStationPtr->getItemName() == station->getItemName();
 						});
-					
-					
 
 					if (!isExisted && nextStationPtr) {
 						m_activeLine.push_back(nextStationPtr);
@@ -125,7 +123,9 @@ namespace seneca {
 	};
 
 	void LineManager::display(std::ostream& os) const {
-		for (auto& station : m_activeLine) {
+		std::for_each(m_activeLine.begin(), m_activeLine.end(), 
+		[&os](Workstation* station){
+			
 			std::string nextStationName;
 			Workstation* nextStationPtr = station->getNextStation();	
 
@@ -134,8 +134,8 @@ namespace seneca {
 			} else {
 				nextStationName = "End of Line";
 			};
-
+			
 			os << station->getItemName() << " --> " << nextStationName << std::endl;
-		};
+		});
 	};
 }
