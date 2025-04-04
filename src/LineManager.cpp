@@ -8,8 +8,6 @@
 #include "Workstation.h"
 
 namespace seneca {
-	static size_t runCount = 0;
-
 	LineManager::LineManager(const std::string& file, const std::vector<Workstation*>& stations) {
 		std::ifstream ifile(file);
 		if(!ifile.is_open()) throw std::string("Can't throw file.") + file;
@@ -74,16 +72,18 @@ namespace seneca {
 		};
 
 		ifile.close();
-
-		for(auto& station : m_activeLine) {
-			bool isInNextStation = false;
-			
-			for(auto& other : m_activeLine) {
-				if(other->getNextStation() && station->getItemName() == other->getNextStation()->getItemName()) isInNextStation =true;
-			};	
-
-			if(!isInNextStation) m_firstStation = station;
-		};
+		
+		auto firstStation = std::find_if(m_activeLine.begin(), m_activeLine.end(), 
+			[&](Workstation* station) {
+				return std::none_of(m_activeLine.begin(), m_activeLine.end(), 
+					[&](Workstation* ws){
+						return station == ws->getNextStation();
+					});
+			});
+		
+		if(firstStation  != m_activeLine.end()) {
+			m_firstStation = *firstStation;
+		}
 
 		m_cntCustomerOrder = g_pending.size();	
 	};	
@@ -103,7 +103,7 @@ namespace seneca {
 	bool LineManager::run(std::ostream& os) {
 		static size_t iteration = 0;
 
-		os << "Line Manager Iteration: " << ++runCount << std::endl;	
+		os << "Line Manager Iteration: " << ++iteration << std::endl;	
 
 		if (!g_pending.empty()) {
 			(*m_firstStation) += std::move(g_pending.front());
