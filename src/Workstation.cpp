@@ -22,7 +22,8 @@ namespace seneca {
 
 			if(isDone) {
 				if (m_pNextStaion) {
-					m_pNextStaion->m_orders.push_back(std::move(m_orders.front()));
+					*m_pNextStaion += std::move(m_orders.front());
+					m_orders.pop_front();
 					isMoved = true;
 				} else {
 					if (m_orders.front().isOrderFilled()) {
