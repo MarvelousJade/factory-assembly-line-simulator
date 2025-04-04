@@ -97,29 +97,29 @@ namespace seneca {
 			current = current->getNextStation();
 		}
 		
-		m_activeLine = orderedStation;
+		m_activeLine = std::move(orderedStation);
 	};
 
 	bool LineManager::run(std::ostream& os) {
+		static size_t iteration = 0;
+
+		os << "Line Manager Iteration: " << ++runCount << std::endl;	
+
 		if (!g_pending.empty()) {
 			(*m_firstStation) += std::move(g_pending.front());
 			g_pending.pop_front();
 
 		}; 
 		
-		
 		std::for_each(m_activeLine.begin(), m_activeLine.end(), 
 			[&](Workstation* station) {
-				bool isMoved = false;
-				do {
-					station->fill(os);
-					isMoved = station->attemptToMoveOrder();				
-				} while (isMoved);
+				station->fill(os);
 			});
 		
-		runCount++;
-		os << "Line Manager Iteration: " << runCount << std::endl;	
-		
+		std::for_each(m_activeLine.begin(), m_activeLine.end(), 
+			[](Workstation* station) {
+				station->attemptToMoveOrder();				
+			});
 
 		return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
 	};
