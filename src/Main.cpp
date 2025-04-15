@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
                         }
                         
                         std::string stationFile1, stationFile2;
-                        char delimiter1, delimiter2;
+                        char delimiter1, delimiter2 = '\0';
                         
                         std::cout << "Enter first station file name: ";
                         std::getline(std::cin, stationFile1);
