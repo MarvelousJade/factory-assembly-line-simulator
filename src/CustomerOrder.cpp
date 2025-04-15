@@ -44,7 +44,7 @@ namespace seneca {
 		};
 	};
 
-	CustomerOrder::CustomerOrder(const CustomerOrder& src) {
+	CustomerOrder::CustomerOrder(const CustomerOrder&) {
 		throw "Don't copy me plz!";
 	};
 
