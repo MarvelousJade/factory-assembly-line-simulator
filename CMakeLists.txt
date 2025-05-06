@@ -89,3 +89,10 @@ message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
 message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Data directory: ${DATA_DIR}")
+
+# Testing support
+option(BUILD_TESTS "Build the tests" ON)
+
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
