@@ -132,7 +132,7 @@ TEST_CASE("Workstation - Fill First Order") {
     // Fill orders - should only fill the first one
     std::ostringstream oss;
     desk.fill(oss);
-   desk.attemptToMoveOrder();
+    desk.attemptToMoveOrder();
 
     // Check that only Alice's order was filled
     std::string fillMessage = oss.str();
@@ -165,17 +165,17 @@ TEST_CASE("Workstation - Attempt To Move Order") {
     // Set chair as the next station after desk
     desk.setNextStation(&chair);
     
-    Utilities::setDelimiter(',');
+    Utilities::setDelimiter('|');
     // Create a customer order that needs both desk and chair
     CustomerOrder order("Charlie|Office|Desk|Chair");
-    
+
     // Add the order to the desk workstation
     desk += std::move(order);
     
     // Fill the desk part of the order
     std::ostringstream oss;
     desk.fill(oss);
-    
+
     // Attempt to move the order - should move to chair since desk is filled
     bool moved = desk.attemptToMoveOrder();
     
