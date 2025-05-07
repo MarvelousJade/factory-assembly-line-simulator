@@ -132,7 +132,8 @@ TEST_CASE("Workstation - Fill First Order") {
     // Fill orders - should only fill the first one
     std::ostringstream oss;
     desk.fill(oss);
-    
+   desk.attemptToMoveOrder();
+
     // Check that only Alice's order was filled
     std::string fillMessage = oss.str();
     CHECK(fillMessage.find("Filled Alice") != std::string::npos);
