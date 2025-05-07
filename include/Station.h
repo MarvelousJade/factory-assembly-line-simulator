@@ -20,6 +20,8 @@ namespace seneca {
 		size_t getQuantity() const;
 		void updateQuantity();
 		void display(std::ostream& os, bool full) const;
+		static void resetWidthField();
+		static size_t getStaticWidthField();
 	};
 }
 

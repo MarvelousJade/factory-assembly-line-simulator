@@ -57,4 +57,14 @@ namespace seneca {
 		}
 		os << std::endl;
 	};
+	
+	// Static method to reset the width field for testing
+        void Station::resetWidthField() {
+            Station::m_widthField = 0;
+        }
+        
+        // Static method to get the width field for verification
+        size_t Station::getStaticWidthField() {
+            return Station::m_widthField;
+        }
 }
