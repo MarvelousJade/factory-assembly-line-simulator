@@ -50,6 +50,7 @@ TEST_CASE("LineManager - Construction") {
     
     std::vector<Workstation*> stations = {desk, chair, lamp};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
@@ -92,6 +93,7 @@ TEST_CASE("LineManager - Reorder Stations") {
     
     std::vector<Workstation*> stations = {chair, desk, lamp};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
@@ -138,6 +140,7 @@ TEST_CASE("LineManager - Run One Iteration") {
     
     std::vector<Workstation*> stations = {desk, chair};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
@@ -187,13 +190,13 @@ TEST_CASE("LineManager - Complete Order Processing") {
     
     std::vector<Workstation*> stations = {desk, chair};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
         "Chair"
     );
     
-    Utilities::setDelimiter('|');
     // Create a customer order
     CustomerOrder order("John|Office|Desk|Chair");
     g_pending.push_back(std::move(order));
@@ -242,13 +245,13 @@ TEST_CASE("LineManager - Multiple Orders") {
     
     std::vector<Workstation*> stations = {desk, chair};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
         "Chair"
     );
     
-    Utilities::setDelimiter('|');
     // Create customer orders
     CustomerOrder order1("Alice|Office|Desk|Chair");
     CustomerOrder order2("Bob|Office|Desk|Chair");
@@ -304,6 +307,7 @@ TEST_CASE("LineManager - Complex Assembly Line") {
     
     std::vector<Workstation*> stations = {desk, chair, lamp, computer, monitor};
     
+    Utilities::setDelimiter('|');
     // Create a temp assembly line configuration file (non-linear assembly)
     std::string tempFile = createTempAssemblyLineFile(
         "Desk|Chair\n"
@@ -313,7 +317,6 @@ TEST_CASE("LineManager - Complex Assembly Line") {
         "Monitor"
     );
     
-    Utilities::setDelimiter('|');
     // Create a customer order that needs all items
     CustomerOrder order("David|Complete Office|Desk|Chair|Lamp|Computer|Monitor");
     g_pending.push_back(std::move(order));

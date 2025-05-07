@@ -194,7 +194,7 @@ TEST_CASE("CustomerOrder - Cannot Fill Due to Stock") {
     // Create a station with 0 quantity
     Station emptyStation("EmptyItem,300000,0,Item with no stock");
     
-    Utilities::setDelimiter(',');
+    Utilities::setDelimiter('|');
     // Create a customer order with the empty item
     CustomerOrder order("Chris|Test|EmptyItem");
     
