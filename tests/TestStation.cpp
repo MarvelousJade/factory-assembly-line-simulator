@@ -247,7 +247,7 @@ TEST_CASE("Station - Field Width Adjustment") {
     
     // Both outputs should use the same field width for the name
     // The field width should be adjusted to the length of the longest name
-    CHECK(output1.find("Desk            ") != std::string::npos); // padded with spaces
+    CHECK(output1.find("Desk          ") != std::string::npos); // padded with spaces
     CHECK(output2.find("ExecutiveChair") != std::string::npos);
     
     // Restore delimiter
