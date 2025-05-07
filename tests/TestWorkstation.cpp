@@ -202,13 +202,14 @@ TEST_CASE("Workstation - Attempt To Move Order") {
 TEST_CASE("Workstation - Incomplete Order") {
     // Save the original delimiter to restore later
     char originalDelimiter = Utilities::getDelimiter();
-    Utilities::setDelimiter('|');
+    Utilities::setDelimiter(',');
     
     clearWorkstationTestQueues();
     
     // Create a workstation with no inventory
     Workstation emptyDesk("Desk,100000,0,Office desk");
     
+    Utilities::setDelimiter('|');
     // Create a customer order that needs a desk
     CustomerOrder order("Dave|Office|Desk");
     
@@ -240,7 +241,7 @@ TEST_CASE("Workstation - Incomplete Order") {
 TEST_CASE("Workstation - Multiple Orders Processing") {
     // Save the original delimiter to restore later
     char originalDelimiter = Utilities::getDelimiter();
-    Utilities::setDelimiter('|');
+    Utilities::setDelimiter(',');
     
     clearWorkstationTestQueues();
     
@@ -251,6 +252,7 @@ TEST_CASE("Workstation - Multiple Orders Processing") {
     // Set chair as the next station after desk
     desk.setNextStation(&chair);
     
+    Utilities::setDelimiter('|');
     // Create customer orders
     CustomerOrder order1("Eve|Office|Desk|Chair");
     CustomerOrder order2("Frank|Office|Desk|Chair");
