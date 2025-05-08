@@ -33,6 +33,10 @@ set(HEADERS
 # Create executable
 add_executable(simulator ${SOURCES} ${HEADERS})
 
+set_target_properties(simulator PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
 # Add include directory
 target_include_directories(simulator PRIVATE ${INCLUDE_DIR})
 
@@ -91,7 +95,7 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Data directory: ${DATA_DIR}")
 
 # Testing support
-option(BUILD_TESTS "Build the tests" ON)
+option(BUILD_TESTS "Build the tests" OFF)
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
